@@ -1,0 +1,159 @@
+{
+  "version": 7,
+  "generator": "@async/pipeline",
+  "config": "pipeline.ts",
+  "workflow": ".github/workflows/async-pipeline.yml",
+  "hash": "sha256:6c4bce1a6680cce7f3447ea914e1a31894f406e64707f39ae7e7a205b5285d5f",
+  "generatedAt": "2026-06-17T06:15:35.351Z",
+  "triggers": {
+    "pull_request": {},
+    "push": {
+      "branches": [
+        "main"
+      ]
+    },
+    "release": {},
+    "workflow_dispatch": {}
+  },
+  "jobs": [
+    {
+      "id": "preview",
+      "target": [
+        "preview"
+      ],
+      "trigger": [
+        "pr"
+      ],
+      "env": {
+        "GITHUB_TOKEN": {
+          "kind": "async-pipeline.env.secret",
+          "name": "GITHUB_TOKEN"
+        }
+      },
+      "github": {
+        "permissions": {
+          "issues": "write",
+          "packages": "write",
+          "pullRequests": "write"
+        }
+      },
+      "if": "github.event_name == 'pull_request'"
+    },
+    {
+      "id": "publish",
+      "target": [
+        "publish"
+      ],
+      "trigger": [
+        "manual",
+        "release"
+      ],
+      "env": {
+        "GITHUB_TOKEN": {
+          "kind": "async-pipeline.env.secret",
+          "name": "GITHUB_TOKEN"
+        },
+        "NODE_AUTH_TOKEN": {
+          "kind": "async-pipeline.env.secret",
+          "name": "NPM_TOKEN"
+        }
+      },
+      "environment": {
+        "name": "npm-publish",
+        "url": "https://www.npmjs.com/package/@async/github-app"
+      },
+      "requires": {
+        "provenance": true
+      },
+      "github": {
+        "permissions": {
+          "contents": "write",
+          "packages": "write"
+        }
+      },
+      "if": "(github.event_name == 'workflow_dispatch' && github.event.inputs.job == 'publish') || (github.event_name == 'release')"
+    },
+    {
+      "id": "release-doctor",
+      "target": [
+        "release-doctor"
+      ],
+      "trigger": [
+        "manual"
+      ],
+      "env": {
+        "GITHUB_TOKEN": {
+          "kind": "async-pipeline.env.secret",
+          "name": "GITHUB_TOKEN"
+        }
+      },
+      "github": {
+        "permissions": {
+          "contents": "read",
+          "packages": "read"
+        }
+      },
+      "if": "github.event_name == 'workflow_dispatch' && github.event.inputs.job == 'release-doctor'"
+    },
+    {
+      "id": "snapshot",
+      "target": [
+        "snapshot"
+      ],
+      "trigger": [
+        "main"
+      ],
+      "env": {
+        "GITHUB_TOKEN": {
+          "kind": "async-pipeline.env.secret",
+          "name": "GITHUB_TOKEN"
+        }
+      },
+      "github": {
+        "permissions": {
+          "contents": "write",
+          "packages": "write"
+        }
+      },
+      "if": "github.event_name == 'push' && (github.ref == 'refs/heads/main')"
+    },
+    {
+      "id": "verify",
+      "target": [
+        "pack"
+      ],
+      "trigger": [
+        "pr",
+        "main",
+        "release"
+      ],
+      "env": {},
+      "if": "(github.event_name == 'pull_request') || (github.event_name == 'push' && (github.ref == 'refs/heads/main')) || (github.event_name == 'release')"
+    }
+  ],
+  "packageManager": "pnpm",
+  "packageManagerVersion": "10.20.0",
+  "setup": "node",
+  "nodeVersion": "24",
+  "taskCache": true,
+  "dependencyCache": true,
+  "dependencyCachePath": "pnpm-lock.yaml",
+  "dependabotAutoMerge": {
+    "enabled": false,
+    "ecosystems": [
+      "github-actions",
+      "npm",
+      "deno"
+    ]
+  },
+  "packagePreviews": {
+    "enabled": false,
+    "registry": "https://npm.pkg.github.com",
+    "tokenEnv": "GITHUB_TOKEN",
+    "comment": true
+  },
+  "manualDispatchJobs": [
+    "publish",
+    "release-doctor"
+  ]
+}

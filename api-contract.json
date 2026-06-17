@@ -1,0 +1,115 @@
+{
+  "format": "api-contract.package.v1",
+  "packageName": "@async/github-app",
+  "catalogs": [
+    {
+      "format": "api-contract.catalog.v1",
+      "contractId": "@async/github-app.package",
+      "title": "Async GitHub App Package Exports",
+      "features": [
+        {
+          "id": "export.root",
+          "title": "@async/github-app exports auth providers, GitHub client operations, app metadata, change-set types, receipts, and safety helpers",
+          "releaseTag": "public",
+          "stability": "preview",
+          "group": "exports",
+          "docsUrl": "https://github.com/async/github-app/blob/main/README.md"
+        },
+        {
+          "id": "export.server",
+          "title": "@async/github-app/server exports Fetch-compatible webhook verification and routing handlers",
+          "releaseTag": "public",
+          "stability": "preview",
+          "group": "exports",
+          "docsUrl": "https://github.com/async/github-app/blob/main/README.md"
+        },
+        {
+          "id": "export.actions",
+          "title": "@async/github-app/actions exports GitHub Actions bridge workflow rendering and pull-based apply helpers",
+          "releaseTag": "public",
+          "stability": "preview",
+          "group": "exports",
+          "docsUrl": "https://github.com/async/github-app/blob/main/README.md"
+        },
+        {
+          "id": "export.content",
+          "title": "@async/github-app/content exports JSON, JSONC, Markdown, MDX, and generic content mapping helpers",
+          "releaseTag": "public",
+          "stability": "preview",
+          "group": "exports",
+          "docsUrl": "https://github.com/async/github-app/blob/main/README.md"
+        }
+      ]
+    },
+    {
+      "format": "api-contract.catalog.v1",
+      "contractId": "@async/github-app.runtime",
+      "title": "Async GitHub Integration Runtime",
+      "features": [
+        {
+          "id": "runtime.auth",
+          "title": "Auth providers support GitHub App installation tokens, user tokens, static tokens, and Actions GITHUB_TOKEN fallback",
+          "releaseTag": "public",
+          "stability": "preview",
+          "group": "runtime",
+          "docsUrl": "https://github.com/async/github-app/blob/main/README.md"
+        },
+        {
+          "id": "runtime.change-set",
+          "title": "Change sets validate safe paths and commit upserts or deletes serially with branch, commit, PR, and index receipt metadata",
+          "releaseTag": "public",
+          "stability": "preview",
+          "group": "runtime",
+          "docsUrl": "https://github.com/async/github-app/blob/main/README.md"
+        },
+        {
+          "id": "runtime.webhook",
+          "title": "Webhook handlers verify SHA-256 signatures before JSON routing and treat duplicate delivery ids idempotently",
+          "releaseTag": "public",
+          "stability": "preview",
+          "group": "runtime",
+          "docsUrl": "https://github.com/async/github-app/blob/main/README.md"
+        },
+        {
+          "id": "runtime.actions-bridge",
+          "title": "Actions bridge mode renders workflow YAML and pulls approved change sets with repo-local GITHUB_TOKEN receipts",
+          "releaseTag": "public",
+          "stability": "preview",
+          "group": "runtime",
+          "docsUrl": "https://github.com/async/github-app/blob/main/README.md"
+        },
+        {
+          "id": "runtime.content",
+          "title": "Content helpers map records to JSON, JSONC read-only-by-default, Markdown, and MDX file formats without schema ownership",
+          "releaseTag": "public",
+          "stability": "preview",
+          "group": "runtime",
+          "docsUrl": "https://github.com/async/github-app/blob/main/README.md"
+        }
+      ]
+    }
+  ],
+  "supported": [
+    {
+      "format": "api-contract.surface.v1",
+      "contractId": "@async/github-app.package",
+      "features": [
+        "export.root",
+        "export.server",
+        "export.actions",
+        "export.content"
+      ]
+    },
+    {
+      "format": "api-contract.surface.v1",
+      "contractId": "@async/github-app.runtime",
+      "features": [
+        "runtime.auth",
+        "runtime.actions-bridge",
+        "runtime.change-set",
+        "runtime.content",
+        "runtime.webhook"
+      ]
+    }
+  ]
+}
