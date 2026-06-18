@@ -46,7 +46,6 @@
     "pack:check": "npm --cache .async/npm-cache pack --dry-run",
     "pipeline:github:check": "async-pipeline github check",
     "pipeline:github:generate": "async-pipeline github generate",
-    "pipeline:preview": "async-pipeline run preview",
     "pipeline:publish": "async-pipeline run publish",
     "pipeline:publish:github:main": "async-pipeline publish github main --package .",
     "pipeline:publish:github:pr": "async-pipeline publish github pr --package .",
@@ -78,7 +77,7 @@
   },
   "devDependencies": {
     "@async/api-contract": "0.1.1",
-    "@async/pipeline": "0.8.4",
+    "@async/pipeline": "0.8.8",
     "@types/node": "24.12.4",
     "typescript": "6.0.3"
   }

@@ -5,6 +5,11 @@ name: Async Pipeline
 
 on:
   pull_request:
+    types:
+      - "opened"
+      - "ready_for_review"
+      - "reopened"
+      - "synchronize"
   push:
     branches:
       - "main"
@@ -23,55 +28,6 @@ permissions:
   contents: read
 
 jobs:
-  preview:
-    name: preview
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      issues: write
-      packages: write
-      pull-requests: write
-    steps:
-      - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-
-      - name: Setup Node
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
-        with:
-          node-version: 24
-          registry-url: https://registry.npmjs.org/
-          package-manager-cache: false
-
-      - name: Enable pnpm
-        run: |
-          corepack enable
-          corepack prepare pnpm@10.20.0 --activate
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Check generated workflow
-        run: pnpm async-pipeline github check
-
-      - name: Run pipeline job
-        run: pnpm async-pipeline run preview
-        env:
-          CI: true
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Explain async-pipeline run
-        if: failure()
-        run: pnpm async-pipeline explain --run latest || true
-
-      - name: Upload async-pipeline run evidence
-        if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
-        with:
-          name: async-pipeline-${{ github.job }}-runs
-          path: .async/runs
-          if-no-files-found: ignore
-
   publish:
     name: publish
     if: (github.event_name == 'workflow_dispatch' && github.event.inputs.job == 'publish') || (github.event_name == 'release')
@@ -87,17 +43,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - name: Setup Node
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+      - name: Setup pnpm runtime
+        uses: pnpm/setup@cf03a9b516e09bc5a90f041fc26fc930c9dc631b # v1.0.0
         with:
-          node-version: 24
-          registry-url: https://registry.npmjs.org/
-          package-manager-cache: false
-
-      - name: Enable pnpm
-        run: |
-          corepack enable
-          corepack prepare pnpm@10.20.0 --activate
+          version: 10.20.0
+          runtime: node@24
+          install: false
+          cache: false
 
       - name: Use current npm
         run: npm install -g npm@11.16.0
@@ -138,17 +90,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - name: Setup Node
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+      - name: Setup pnpm runtime
+        uses: pnpm/setup@cf03a9b516e09bc5a90f041fc26fc930c9dc631b # v1.0.0
         with:
-          node-version: 24
-          registry-url: https://registry.npmjs.org/
-          package-manager-cache: false
-
-      - name: Enable pnpm
-        run: |
-          corepack enable
-          corepack prepare pnpm@10.20.0 --activate
+          version: 10.20.0
+          runtime: node@24
+          install: false
+          cache: false
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -185,17 +133,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - name: Setup Node
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+      - name: Setup pnpm runtime
+        uses: pnpm/setup@cf03a9b516e09bc5a90f041fc26fc930c9dc631b # v1.0.0
         with:
-          node-version: 24
-          registry-url: https://registry.npmjs.org/
-          package-manager-cache: false
-
-      - name: Enable pnpm
-        run: |
-          corepack enable
-          corepack prepare pnpm@10.20.0 --activate
+          version: 10.20.0
+          runtime: node@24
+          install: false
+          cache: false
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -229,17 +173,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - name: Setup Node
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+      - name: Setup pnpm runtime
+        uses: pnpm/setup@cf03a9b516e09bc5a90f041fc26fc930c9dc631b # v1.0.0
         with:
-          node-version: 24
-          registry-url: https://registry.npmjs.org/
-          package-manager-cache: false
-
-      - name: Enable pnpm
-        run: |
-          corepack enable
-          corepack prepare pnpm@10.20.0 --activate
+          version: 10.20.0
+          runtime: node@24
+          install: false
+          cache: false
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -251,6 +191,58 @@ jobs:
         run: pnpm async-pipeline run verify
         env:
           CI: true
+
+      - name: Explain async-pipeline run
+        if: failure()
+        run: pnpm async-pipeline explain --run latest || true
+
+      - name: Upload async-pipeline run evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: async-pipeline-${{ github.job }}-runs
+          path: .async/runs
+          if-no-files-found: ignore
+
+  package-preview:
+    name: package-preview
+    if: github.event_name == 'pull_request' && github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      packages: write
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Setup pnpm runtime
+        uses: pnpm/setup@cf03a9b516e09bc5a90f041fc26fc930c9dc631b # v1.0.0
+        with:
+          version: 10.20.0
+          runtime: node@24
+          install: false
+          cache: false
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check generated workflow
+        run: pnpm async-pipeline github check
+
+      - name: Run package preview target
+        run: pnpm async-pipeline run-task pack
+        env:
+          CI: true
+
+      - name: Publish package preview
+        run: pnpm async-pipeline publish github pr --package . --registry https://npm.pkg.github.com
+        env:
+          CI: true
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Explain async-pipeline run
         if: failure()

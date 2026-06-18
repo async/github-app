@@ -13,13 +13,14 @@ export default definePipeline({
     github: {
       nodeVersion: 24,
       cache: false,
-      dependencyCache: false
+      dependencyCache: false,
+      packagePreviews: true
     },
     tasks: {
       prefix: "pipeline",
       runners: ["package"],
       targets: [{ package: "@async/github-app" }],
-      jobs: ["preview", "publish", "release-doctor", "snapshot", "verify"],
+      jobs: ["publish", "release-doctor", "snapshot", "verify"],
       scripts: {
         "github:check": "github check",
         "github:generate": "github generate",
@@ -109,13 +110,6 @@ export default definePipeline({
       cache: false,
       run: sh`pnpm pack:check`
     }),
-    preview: task({
-      description: "Publish same-repo PR previews to GitHub Packages.",
-      dependsOn: ["pack"],
-      inputs: ["production"],
-      cache: false,
-      run: sh`pnpm async-pipeline publish github pr --package .`
-    }),
     snapshot: task({
       description: "Publish main snapshots to GitHub Packages.",
       dependsOn: ["pack"],
@@ -157,20 +151,6 @@ export default definePipeline({
     verify: job({
       target: "pack",
       trigger: ["pr", "main", "release"]
-    }),
-    preview: job({
-      target: "preview",
-      trigger: ["pr"],
-      env: {
-        GITHUB_TOKEN: env.secret("GITHUB_TOKEN")
-      },
-      github: {
-        permissions: {
-          issues: "write",
-          packages: "write",
-          pullRequests: "write"
-        }
-      }
     }),
     snapshot: job({
       target: "snapshot",
