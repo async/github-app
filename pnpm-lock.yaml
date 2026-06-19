@@ -12,8 +12,8 @@ importers:
         specifier: 0.1.1
         version: 0.1.1
       '@async/pipeline':
-        specifier: 0.9.27
-        version: 0.9.27
+        specifier: 0.9.28
+        version: 0.9.28
       '@types/node':
         specifier: 24.12.4
         version: 24.12.4
@@ -28,8 +28,8 @@ packages:
     engines: {node: '>=24'}
     hasBin: true
 
-  '@async/pipeline@0.9.27':
-    resolution: {integrity: sha512-i1VGetXQiDLxdqd2iHnKz/eh1t/UagofJxqS/Xu9+/TVWZa4+KszGSRKLmEB66hpFXMhB2q1UiGYjmy3XHjq0g==}
+  '@async/pipeline@0.9.28':
+    resolution: {integrity: sha512-0mh5sHQ3r69hoUaD5a29d6KEbOYFhAVPpZKTMkEKIJDQjdJbHY8FKh81o3qv/yZmXbA5dQKDgLVJJ3HdmUgcJQ==}
     engines: {node: '>=24'}
     hasBin: true
 
@@ -48,7 +48,7 @@ snapshots:
 
   '@async/api-contract@0.1.1': {}
 
-  '@async/pipeline@0.9.27': {}
+  '@async/pipeline@0.9.28': {}
 
   '@types/node@24.12.4':
     dependencies:
