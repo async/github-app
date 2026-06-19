@@ -23,7 +23,7 @@ Contract: `@async/github-app.runtime`
 
 | Feature | Title | Release | Stability | Lifecycle | Replacement | Docs |
 | --- | --- | --- | --- | --- | --- | --- |
-| `runtime.actions-bridge` | Actions bridge mode renders workflow YAML and pulls approved change sets with repo-local GITHUB_TOKEN receipts | public | preview | active |  | [docs](https://github.com/async/github-app/blob/main/README.md) |
+| `runtime.actions-bridge` | Actions bridge mode renders workflow YAML and pulls approved change sets with repo-local GITHUB_TOKEN receipts, lease ids, branch-prefix checks, and allowed-path checks | public | preview | active |  | [docs](https://github.com/async/github-app/blob/main/README.md) |
 | `runtime.auth` | Auth providers support GitHub App installation tokens, user tokens, static tokens, and Actions GITHUB_TOKEN fallback | public | preview | active |  | [docs](https://github.com/async/github-app/blob/main/README.md) |
 | `runtime.change-set` | Change sets validate safe paths and commit upserts or deletes serially with branch, commit, PR, and index receipt metadata | public | preview | active |  | [docs](https://github.com/async/github-app/blob/main/README.md) |
 | `runtime.content` | Content helpers map records to JSON, JSONC read-only-by-default, Markdown, and MDX file formats without schema ownership | public | preview | active |  | [docs](https://github.com/async/github-app/blob/main/README.md) |

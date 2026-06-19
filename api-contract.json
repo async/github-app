@@ -72,7 +72,7 @@
         },
         {
           "id": "runtime.actions-bridge",
-          "title": "Actions bridge mode renders workflow YAML and pulls approved change sets with repo-local GITHUB_TOKEN receipts",
+          "title": "Actions bridge mode renders workflow YAML and pulls approved change sets with repo-local GITHUB_TOKEN receipts, lease ids, branch-prefix checks, and allowed-path checks",
           "releaseTag": "public",
           "stability": "preview",
           "group": "runtime",

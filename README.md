@@ -130,11 +130,15 @@ For organizations that cannot approve a GitHub App install, render a repo-local 
 import { renderActionsBridgeWorkflow } from "@async/github-app/actions";
 
 const yaml = renderActionsBridgeWorkflow({
-  asyncEndpoint: "${{ vars.ASYNC_PROJECT_URL }}"
+  asyncEndpoint: "${{ vars.ASYNC_PROJECT_URL }}",
+  branchPrefix: "async/bridge/",
+  allowedPathGlobs: ["pipeline.ts", "package.json", "docs/**"]
 });
 ```
 
-Write the result to `.github/workflows/async-github-bridge.yml` in the customer repo.
+Prefer `@async/pipeline` generated workflows for new repos so workflow triggers,
+permissions, action pins, locks, and secret routing stay centrally managed. The
+standalone renderer remains available for compatibility.
 
 The generated workflow:
 
@@ -143,8 +147,9 @@ The generated workflow:
 - requests `contents: write` and `pull-requests: write`
 - uses `ASYNC_PROJECT_TOKEN` plus repo-local `GITHUB_TOKEN`
 - pulls approved change sets from Async
+- enforces configured branch-prefix and allowed-path constraints
 - commits branches and optionally opens PRs
-- posts receipts back to Async
+- posts lease-aware receipts back to Async
 
 Repo setting required for PR creation: enable “Allow GitHub Actions to create and approve pull requests”. If that is unavailable, Async can use branch-only mode and let a human open the PR.
 
